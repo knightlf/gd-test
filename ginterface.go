@@ -15,6 +15,11 @@ func main() {
 	b.AppSc()
 	Disconnect(b)
 
+	//对象赋值给接口，是拷贝形式，内部存储使用的复制品指针，无法修改状态
+	b.Name="nip"
+	b.AppSc()
+	Disconnect(b)
+
 }
 
 /* 定义接口 */
@@ -52,7 +57,7 @@ func (one Onepluse) call() {
 }
 
 func (iPhone IPhone) AppSc() {
-	fmt.Println("im iphone app store connectd.")
+	fmt.Println("im iphone app store connectd.",iPhone.Name)
 }
 
 /* 实现接口方法 */
@@ -82,7 +87,7 @@ func Disconnect(p interface{}) {
 	case Onepluse:
 		fmt.Println("S Disconnect from:", v.Name)
 	case IPhone:
-		fmt.Println("S Disconnect from:", v.Sri)
+		fmt.Println("S Disconnect from:", v.Sri,"++++",v.Name)
 	case Sc:
 		fmt.Println("S Disconnect from:", v.AppSc)
 	default:

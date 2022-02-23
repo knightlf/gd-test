@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 //多个CHANNEL操作
 func main() {
@@ -36,4 +39,37 @@ func main() {
 		<-o
 	}
 
+	c3 := make(chan int)
+	go rp(c3)
+
+	//for{ //卡死事件循环
+	for i := 0; i < 5; i++ {
+		//select 发送消息
+		select {
+		case c3 <- 0:
+		case c3 <- 1:
+		}
+	}
+
+	//close(c3)
+	timeout()
+
+}
+
+//随机输出(0\1) --c3
+func rp(c chan int) {
+	for v := range c {
+		fmt.Println(v)
+	}
+}
+
+//timeout:select configure
+func timeout() {
+	c := make(chan bool)
+	select {
+	case v := <-c:
+		fmt.Println(v)
+	case <-time.After(3 * time.Second):
+		fmt.Println("timeout.....")
+	}
 }
